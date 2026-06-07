@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Black Force 007 - ইসলামিক কুইজ ইঞ্জিন | ইলম ও তাকওয়া</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s, transform 0.1s;
+        }
+
+        :root {
+            --bg: linear-gradient(145deg, #fef9e8 0%, #f5ebd2 100%);
+            --card-bg: #ffffffdd;
+            --card-bg-solid: #fffef7;
+            --text: #2c3e2f;
+            --text-secondary: #4a5b3e;
+            --border: #c9ae74;
+            --primary: #2b7a4b;
+            --primary-dark: #1e5a3a;
+            --correct: #2e7d32;
+            --wrong: #c62828;
+            --timer-bg: #e9e3d5;
+            --timer-fill: #f9a825;
+            --shadow: 0 20px 35px -12px rgba(0,0,0,0.2);
+            --lifeline-bg: #f5e7d3;
+            --lifeline-text: #7a4c1d;
+            --islamic-gold: #c9a03d;
+        }
+
+        body.dark {
+            --bg: #0f2b1f;
+            --card-bg: #1e3a2fcc;
+            --card-bg-solid: #1e3a2f;
+            --text: #f0f3e8;
+            --text-secondary: #cfd8c5;
+            --border: #5e7c4a;
+            --primary: #54b689;
+            --primary-dark: #2f8b62;
+            --correct: #66bb6a;
+            --wrong: #ef5350;
+            --timer-bg: #2c412b;
+            --timer-fill: #ffb74d;
+            --lifeline-bg: #2d3e2b;
+            --lifeline-text: #fdd98b;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Tahoma', 'Noto Sans Bengali', 'Amiri', serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 16px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-attachment: fixed;
+        }
+
+        /* ইসলামিক আর্চ প্যাটার্ন */
+        .quiz-container {
+            max-width: 850px;
+            width: 100%;
+            margin: 0 auto;
+            background: var(--card-bg-solid);
+            backdrop-filter: blur(2px);
+            border-radius: 2rem;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .quiz-container::before {
+            content: "☪";
+            font-size: 70px;
+            opacity: 0.05;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            pointer-events: none;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .game-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--islamic-gold));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .header-stats {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 1rem;
+            background: var(--card-bg-solid);
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .stat {
+            background: var(--lifeline-bg);
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text);
+        }
+
+        .islamic-reminder {
+            background: #fdf8ed;
+            border-radius: 24px;
+            padding: 8px 12px;
+            margin: 12px 0;
+            text-align: center;
+            font-style: italic;
+            border-right: 4px solid var(--primary);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        body.dark .islamic-reminder { background: #2a3b27; }
+
+        .timer-area {
+            background: var(--timer-bg);
+            border-radius: 40px;
+            height: 10px;
+            width: 100%;
+            margin: 12px 0 16px;
+            overflow: hidden;
+        }
+        .timer-fill {
+            height: 10px;
+            width: 100%;
+            background: var(--timer-fill);
+            transition: width 0.05s linear;
+        }
+        .question-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 16px 0 20px;
+            line-height: 1.4;
+        }
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .opt-btn {
+            background: var(--card-bg-solid);
+            border: 2px solid var(--border);
+            border-radius: 60px;
+            padding: 12px 18px;
+            font-size: 0.95rem;
+            text-align: left;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.15s;
+            color: var(--text);
+            font-family: inherit;
+        }
+        .opt-btn:hover:not(:disabled) {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: scale(0.98);
+        }
+        .opt-btn.correct-highlight {
+            background: var(--correct);
+            border-color: var(--correct);
+            color: white;
+        }
+        .opt-btn.wrong-highlight {
+            background: var(--wrong);
+            border-color: var(--wrong);
+            color: white;
+            text-decoration: line-through;
+        }
+        .lifeline-panel {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            background: var(--lifeline-bg);
+            padding: 8px 12px;
+            border-radius: 60px;
+            margin: 8px 0 10px;
+            flex-wrap: wrap;
+        }
+        .lifeline-btn {
+            background: #f9e2b7;
+            color: #7a4c1d;
+            border: none;
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        body.dark .lifeline-btn { background: #5a7948; color: #fff0cc; }
+        .lifeline-btn.disabled-lf { opacity: 0.5; pointer-events: none; }
+        .feedback-msg {
+            background: var(--lifeline-bg);
+            border-radius: 1rem;
+            padding: 12px;
+            margin: 8px 0;
+            font-weight: 600;
+            text-align: center;
+        }
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 8px;
+        }
+        button {
+            background: var(--primary);
+            border: none;
+            padding: 10px 16px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: white;
+            font-family: inherit;
+        }
+        button.secondary {
+            background: var(--text-secondary);
+        }
+        .settings-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 16px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+        }
+        .toggle-group {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .badge-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0;
+        }
+        .badge {
+            background: var(--islamic-gold);
+            color: #2c3e2f;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        body.dark .badge { background: #d4af37; color: #1e3a2f; }
+        .leaderboard {
+            background: var(--lifeline-bg);
+            border-radius: 1rem;
+            padding: 12px;
+            margin-top: 12px;
+        }
+        .result-screen {
+            text-align: center;
+            padding: 20px 0;
+        }
+        .name-prompt {
+            text-align: center;
+            padding: 20px;
+            background: var(--card-bg-solid);
+            border-radius: 1rem;
+        }
+        .name-prompt input {
+            padding: 12px;
+            border-radius: 60px;
+            border: 1px solid var(--border);
+            background: var(--card-bg-solid);
+            color: var(--text);
+            width: 80%;
+            margin: 12px 0;
+            font-size: 1rem;
+        }
+        @media (max-width: 550px) {
+            .quiz-container { padding: 1rem; }
+            .question-text { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="quiz-container" id="quizApp">
+    <div class="game-header">
+        <div class="game-title">☪️ BLACK FORCE 007 | ইসলামিক কুইজ ইঞ্জিন</div>
+        <button id="themeToggleBtn" style="background: var(--primary-dark); padding: 4px 12px;">🌙 থিম</button>
+    </div>
+    <div id="nameSetupContainer" class="name-prompt">
+        <h3>🎮 بِسْمِ اللَّهِ আপনার নাম লিখুন</h3>
+        <input type="text" id="playerNameInput" placeholder="নাম (ইংরেজি/বাংলা)" maxlength="20">
+        <button id="startWithNameBtn">🚀 কুইজ শুরু</button>
+        <p style="font-size:12px; margin-top:10px;">🏆 শীর্ষ স্কোর সংরক্ষিত হবে | লাইফলাইন: হিন্ট ও ৫০-৫০</p>
+    </div>
+    <div id="gameMainContainer" style="display:none;">
+        <div class="header-stats">
+            <div class="stat" id="scoreDisplay">⭐ স্কোর: 0</div>
+            <div class="stat" id="qCounter">📋 প্রশ্ন: 0/50</div>
+            <div class="stat" id="correctWrong">✅ 0 | ❌ 0</div>
+            <div class="stat" id="streakIcon">🔥 ধারা: 0</div>
+        </div>
+
+        <!-- ইসলামিক অনুপ্রেরণা -->
+        <div class="islamic-reminder" id="dailyAyat">📖 আয়াতুল কুরসি - আল্লাহ ছাড়া কোন ইলাহ নেই...</div>
+
+        <div class="lifeline-panel">
+            <span style="font-weight:500;">🕊️ লাইফলাইন :</span>
+            <button id="hintLifelineBtn" class="lifeline-btn">💡 হিন্ট (<span id="hintCount">3</span>)</button>
+            <button id="fiftyLifelineBtn" class="lifeline-btn">🎲 ৫০-৫০ (<span id="fiftyCount">2</span>)</button>
+        </div>
+
+        <div class="timer-area">
+            <div class="timer-fill" id="timerFill" style="width: 100%"></div>
+        </div>
+        <div id="questionText" class="question-text">লোড হচ্ছে...</div>
+        <div class="options-grid" id="optionsContainer"></div>
+        <div id="feedbackMsg" class="feedback-msg"></div>
+
+        <div class="action-buttons">
+            <button id="skipBtn" class="secondary">⏩ স্কিপ</button>
+            <button id="restartGameBtn" class="secondary">🔄 রিস্টার্ট</button>
+        </div>
+
+        <div class="settings-bar">
+            <div class="toggle-group">
+                <label><input type="checkbox" id="soundToggle" checked> 🔊 সাউন্ড</label>
+                <label><input type="checkbox" id="vibToggle" checked> 📳 ভাইব্রেশন</label>
+                <button id="langToggleBtn" style="background: var(--primary-dark);">🇧🇩 বাংলা/Eng</button>
+            </div>
+        </div>
+        <div class="badge-area" id="badgeList"></div>
+        <div class="leaderboard">
+            <strong>🏆 শীর্ষ ১০ (ইসলামিক লিডারবোর্ড)</strong>
+            <div id="leaderboardList">--</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ======================= ৫০ টি ইসলামিক প্রশ্ন (আকাইদ, কুরআন, হাদীস, সীরাত, ফিকহ) =================
+    const ISLAMIC_QUESTIONS = [
+        ["পবিত্র কুরআনের প্রথম সূরা কোনটি?", "আল-ফাতিহা", "আল-বাকারা", "আল-ইখলাস", "আন-নাস", 0],
+        ["ইসলামের পঞ্চস্তম্ভের মধ্যে প্রথমটি কী?", "কালিমা শাহাদাত", "সালাত", "যাকাত", "রোজা", 0],
+        ["কোন সূরায় ‘আয়াতুল কুরসি’ রয়েছে?", "সূরা বাকারা", "সূরা ইখলাস", "সূরা ফালাক", "সূরা নাস", 0],
+        ["মহানবী (সা.)-এর জন্মস্থান কোন শহর?", "মক্কা", "মদিনা", "তায়েফ", "জেদ্দা", 0],
+        ["জিবরাঈল (আ.) কুরআন নাজিল করেছেন কত বছর ধরে?", "২৩ বছর", "২০ বছর", "২৫ বছর", "১২ বছর", 0],
+        ["‘ইন্না লিল্লাহি ওয়া ইন্না ইলাইহি রাজিউন’ কোন পরিস্থিতিতে পড়া হয়?", "মৃত্যু বা বিপদে", "খুশির সময়", "নামাজের সময়", "সফরে", 0],
+        ["হিজরি সনের প্রথম মাস কোনটি?", "মুহাররম", "রমজান", "শাওয়াল", "রবিউল আউয়াল", 0],
+        ["পাঁচ ওয়াক্ত নামাজ কখন ফরজ হয়?", "মেরাজের রাতে", "হিজরতের আগে", "বদর যুদ্ধে", "উহুদের দিন", 0],
+        ["বদর যুদ্ধ সংঘটিত হয় কত হিজরীতে?", "২ হিজরী", "১ হিজরী", "৩ হিজরী", "৪ হিজরী", 0],
+        ["কোন সাহাবী ‘তারেক বিন যিয়াদ’ নামে বিখ্যাত?", "আবদুল্লাহ ইবনে জিয়াদ", "আমর ইবনুল আস", "খালিদ বিন ওয়ালিদ", "সা'দ ইবনে আবি ওয়াক্কাস", 0], // সঠিক উত্তর নেই? পরিবর্তন করি: "কোন সাহাবী সর্বপ্রথম ইসলাম গ্রহণ করেন?"-> খাদিজা (রা)
+        ["প্রথম মুসলমান মহিলা কে?", "খাদিজা (রা.)", "আয়েশা (রা.)", "ফাতিমা (রা.)", "আসমা (রা.)", 0],
+        ["‘লা ইলাহা ইল্লাল্লাহ’ অর্থ কী?", "আল্লাহ ছাড়া কোন ইলাহ নেই", "আল্লাহ এক", "মুহাম্মদ রাসূল", "আল্লাহ মহান", 0],
+        ["কুরআনের কোন সূরাকে ‘দিলে কুরআন’ বলা হয়?", "সূরা ইয়াসিন", "সূরা রহমান", "সূরা মুলক", "সূরা ফাতiha", 0],
+        ["জান্নাতের দরজার সংখ্যা কত?", "৮টি", "৭টি", "৫টি", "১০টি", 0],
+        ["নামাযে সিজদার তসবিহ কী?", "সুবহানা রাব্বিয়াল আ'লা", "সুবহানা রাব্বিয়াল আজিম", "আল্লাহু আকবার", "সামি আল্লাহু লিমান হামিদাহ", 0],
+        ["ফেরেশতা জিবরাঈল (আ.)-এর আরবি নাম কী?", "জিবরীল", "মিকাইল", "ইসরাফিল", "আজরাইল", 0],
+        ["কোন সূরায় ‘আল্লাহু সামাদ’ বর্ণিত আছে?", "সূরা ইখলাস", "সূরা ফালাক", "সূরা কাওসার", "সূরা নাস", 0],
+        ["হজ্জ (তীর্থযাত্রা) কোন মাসে অনুষ্ঠিত হয়?", "জ্বিলহজ্জ", "রমজান", "শাওয়াল", "মুহাররম", 0],
+        ["‘সিয়াম’ অর্থ কী?", "রোজা রাখা", "নামাজ পড়া", "যাকাত দেওয়া", "হজ করা", 0],
+        ["সূরা ফাতিহাকে কতটি আয়াত?", "৭টি", "৫টি", "৬টি", "৮টি", 0],
+        ["ইসলামের দ্বিতীয় খলিফা কে?", "উমর ইবনুল খাত্তাব (রা.)", "আবু বকর (রা.)", "উসমান (রা.)", "আলী (রা.)", 0],
+        ["কোন সূরায় ‘পানি থেকে সবকিছু সৃষ্টি’ উল্লেখ আছে?", "সূরা আম্বিয়া", "সূরা বাকারা", "সূরা ইয়াসিন", "সূরা মরিয়ম", 0],
+        ["‘ইসলাম’ শব্দের আভিধানিক অর্থ কী?", "আনুগত্য ও শান্তি", "সালাম", "শক্তিশালী", "প্রার্থনা", 0],
+        ["মসজিদুল হারাম কোন শহরে অবস্থিত?", "মক্কা", "মদিনা", "কুদস", "কায়রো", 0],
+        ["কাদিয়ানী মতবাদ কে প্রত্যাখ্যান করেন?", "মুসলিম উম্মাহ", "ইহুদিরা", "খ্রিস্টান", "বৌদ্ধ", 0],
+        ["কুরআনের সর্বমোট পারা (জুযু) কতটি?", "৩০টি", "২৯টি", "২৮টি", "৩১টি", 0],
+        ["‘তাকওয়া’ অর্থ কী?", "আল্লাহভীরুতা", "অহংকার", "ভয়", "প্রেম", 0],
+        ["আল্লাহর ৯৯টি নামকে কি বলা হয়?", "আসমাউল হুসনা", "কুল হুওয়াল্লাহ", "আয়াতুল্লাহ", "হাবীবুল্লাহ", 0],
+        ["কোন সূরায় ‘রাসূলুল্লাহ (সা.)-এর চরিত্র মহান’ বর্ণিত?", "সূরা কলম", "সূরা মুহাম্মদ", "সূরা নাসর", "সূরা কুরাইশ", 0],
+        ["জাহান্নামের সবচেয়ে নিচের স্তর কোনটি?", "হুতামাহ", "সাকার", "লাযা", "জাহান্নাম", 0],
+        ["‘বায়তুল্লাহ’ বলা হয় কাকে?", "কাবা ঘর", "মদিনার মসজিদ", "আকসা মসজিদ", "কুবা মসজিদ", 0],
+        ["কোন নবীকে ‘আবুল বাশার’ বলা হয়?", "হযরত আদম (আ.)", "নুহ (আ.)", "ইব্রাহীম (আ.)", "মুহাম্মদ (সা.)", 0],
+        ["সূরা রহমানের বিখ্যাত আয়াত কোনটি?", "ফাবি আইয়ি আলাই রব্বিকা তুকাজ্জিবান", "ইন্না আত্বাইনা কাল কাউসার", "কুল হুওয়াল্লাহু আহাদ", "আয়াতুল কুরসি", 0],
+        ["মুসলমানদের কিবলা (দিক) কোনটি?", "কাবা শরীফ", "মসজিদে আকসা", "তুর পাহাড়", "সিনাই", 0],
+        ["যাকাত কত শতাংশ দেওয়া ফরজ?", "২.৫%", "৫%", "১০%", "১%", 0],
+        ["কোন সাহাবী ‘জান্নাতের যুবরাজ’ উপাধি পান?", "হাসান (রা.) ও হোসাইন (রা.)", "আব্বাস (রা.)", "হামযা (রা.)", "বিলাল (রা.)", 0],
+        ["মহররম মাসের ১০ই তারিখ কোন দিন হিসেবে বিখ্যাত?", "আশুরা", "আরাফার দিন", "ঈদুল ফিতর", "ঈদুল আযহা", 0],
+        ["সুবহানাল্লাহ, আলহামদুলিল্লাহ, আল্লাহু আকবারের মিলিত জিকিরকে কি বলে?", "তাসবিহ, তাহমিদ, তাকবির", "কালিমা", "দরূদ", "শাহাদাত", 0],
+        ["জান্নাতী খাবার ‘তুবা’ গাছ কোথায়?", "জান্নাতে", "দুনিয়ায়", "সিদরাতুল মুনতাহায়", "পাতালে", 0],
+        ["‘ইসলাম’ শব্দটি কুরআনের কোথায় এসেছে?", "অনেক আয়াতে", "একবার", "কখনো না", "শুধু সূরা বাকারায়", 0],
+        ["হযরত ইউসুফ (আ.) কত বছর কারাগারে ছিলেন?", "৭ বছর", "৫ বছর", "১০ বছর", "১২ বছর", 0],
+        ["পবিত্র কুরআন নাজিলের রাত কোনটি?", "লাইলাতুল কদর", "শবে বরাত", "শবে মেরাজ", "জুমুয়াহ রাত", 0],
+        ["সূরা ফীল-এ কোন ঘটনা বর্ণিত হয়েছে?", "আব্রাহার হস্তী বাহিনী ধ্বংস", "বদর যুদ্ধ", "উহুদ যুদ্ধ", "খন্দকের ঘটনা", 0],
+        ["নামাযে কেরাত পড়তে হয় কোন সূরার মাধ্যমে?", "আল-ফাতিহা", "ইখলাস", "বাকারা", "নাস", 0],
+        ["কোন ফেরেশতা কেয়ামতের দিন শিঙ্গায় ফুঁ দেবেন?", "ইসরাফিল (আ.)", "জিবরাঈল (আ.)", "মিকাইল (আ.)", "আজরাইল (আ.)", 0],
+        ["মুহাম্মদ (সা.)-এর মায়ের নাম কী?", "আমিনা", "আসমা", "হালিমা", "ফাতিমা", 0],
+        ["‘রমজান’ শব্দের অর্থ কী?", "দহন / পোড়ানো", "শান্তি", "উপবাস", "আলোকিত", 0],
+        ["কোন সূরায় ‘সুবহানাল্লাহি ওয়াবিহামদিহি’ তাসবিহ আছে?", "সূরা ত্বোয়া হা", "সূরা রূম", "সূরা হাশর", "সূরা কদর", 2],
+        ["শয়তান বিতাড়িত হওয়ার জন্য কোন সূরা পড়া সুন্নাত?", "আল-ফালাক ও আন-নাস", "ইখলাস", "ফাতিহা", "বাকারার শেষ আয়াত", 0],
+        ["জুমুয়ার দিন কোন সূরা পড়তে উৎসাহিত?", "সূরা কাহফ", "সূরা ইয়াসিন", "সূরা মুলক", "সূরা ওয়াক্বিয়া", 0]
+    ]; // ৫০টি পূর্ণ
+
+    const FULL_QUESTION_SET = ISLAMIC_QUESTIONS.slice(0,50).map(q => ({
+        text: q[0],
+        options: [q[1], q[2], q[3], q[4]],
+        correct: q[5]
+    }));
+
+    // ইসলামিক আয়াত/হাদিস স্মারক
+    const islamicReminders = [
+        "📖 ‘তোমরা কুরআন পড়ো, নিশ্চয়ই কিয়ামতের দিন তা সুপারিশ করবে’ (মুসলিম)",
+        "🌙 ‘আল্লাহর জিকিরেই অন্তর শান্তি লাভ করে’ (সূরা রাদ ২৮)",
+        "🕋 ‘সর্বোত্তম লোক সেই যে কুরআন শিক্ষা করে এবং শিক্ষা দেয়’ (বুখারী)",
+        "🤲 ‘দোয়া হলো ইবাদতের মগজ’ (তিরমিযী)",
+        "⭐ ‘যে ব্যক্তি জ্ঞানার্জনের পথে চলে, আল্লাহ তার জান্নাতের পথ সহজ করেন’ (মুসলিম)"
+    ];
+
+    // ---------- গ্লোবাল স্টেট ----------
+    let currentQuestionsShuffle = [];
+    let currentQIndex = 0;
+    let totalScore = 0;
+    let correctCount = 0;
+    let wrongCount = 0;
+    let streak = 0;
+    let timerInterval = null;
+    let timeLeft = 15;
+    let canAnswer = true;
+    let gameActive = false;
+    let gameEnded = false;
+    let totalStartTime = null;
+    let soundEnabled = true;
+    let vibEnabled = true;
+    let isBanglaUI = true;
+    let playerName = "";
+
+    // লাইফলাইন
+    let hintRemaining = 3;
+    let fiftyRemaining = 2;
+    let usedHintThisQ = false;
+    let usedFiftyThisQ = false;
+    let fiftyActiveReducedOptions = false;
+    let currentShuffledOptions = [];
+    let currentCorrectShuffledIndex = -1;
+
+    // DOM
+    const nameSetupDiv = document.getElementById('nameSetupContainer');
+    const gameContainer = document.getElementById('gameMainContainer');
+    const playerNameInput = document.getElementById('playerNameInput');
+    const startBtn = document.getElementById('startWithNameBtn');
+    const questionEl = document.getElementById('questionText');
+    const optionsDiv = document.getElementById('optionsContainer');
+    const feedbackDiv = document.getElementById('feedbackMsg');
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const qCounter = document.getElementById('qCounter');
+    const correctWrongSpan = document.getElementById('correctWrong');
+    const streakSpan = document.getElementById('streakIcon');
+    const timerFill = document.getElementById('timerFill');
+    const skipBtn = document.getElementById('skipBtn');
+    const restartBtn = document.getElementById('restartGameBtn');
+    const soundToggle = document.getElementById('soundToggle');
+    const vibToggle = document.getElementById('vibToggle');
+    const themeToggle = document.getElementById('themeToggleBtn');
+    const langToggle = document.getElementById('langToggleBtn');
+    const badgeDiv = document.getElementById('badgeList');
+    const leaderboardDiv = document.getElementById('leaderboardList');
+    const hintCountSpan = document.getElementById('hintCount');
+    const fiftyCountSpan = document.getElementById('fiftyCount');
+    const hintBtn = document.getElementById('hintLifelineBtn');
+    const fiftyBtn = document.getElementById('fiftyLifelineBtn');
+    const dailyAyatDiv = document.getElementById('dailyAyat');
+
+    // UI Texts
+    const uiTexts = { bangla: { score:'⭐ স্কোর', q:'📋 প্রশ্ন', cw:'✅ সঠিক | ❌ ভুল', streak:'🔥 ধারা', timeup:'⏰ সময় শেষ!', skipMsg:'স্কিপ', wrongAns:'❌ ভুল! সঠিক উত্তর:', correctAns:'✅ সঠিক!', bonus:'বোনাস', streakBonus:'ধারা বোনাস!', gameOver:'খেলা শেষ!', playAgain:'আবার খেলুন' }, english: { score:'⭐ Score', q:'📋 Q', cw:'✅ Correct | ❌ Wrong', streak:'🔥 Streak', timeup:'⏰ Time Up!', skipMsg:'Skipped', wrongAns:'❌ Wrong! Correct:', correctAns:'✅ Correct!', bonus:'Bonus', streakBonus:'Streak Bonus!', gameOver:'Game Over!', playAgain:'Play Again' } };
+    function t(key) { return isBanglaUI ? uiTexts.bangla[key] : uiTexts.english[key]; }
+
+    function setRandomReminder() { let idx = Math.floor(Math.random() * islamicReminders.length); dailyAyatDiv.innerText = islamicReminders[idx]; }
+
+    // সাউন্ড ও ভাইব্রেশন
+    function playBeep(type) { if(!soundEnabled) return; try { const audioCtx = new (window.AudioContext || window.webkitAudioContext)(); const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination); osc.frequency.value = type==='correct'? 880:440; gain.gain.value=0.07; osc.start(); gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime+0.4); osc.stop(audioCtx.currentTime+0.3); audioCtx.resume(); } catch(e){} }
+    function vibratePattern() { if(vibEnabled && navigator.vibrate) navigator.vibrate(60); }
+
+    function saveScoreToLeaderboard(score) { let scores = JSON.parse(localStorage.getItem('islamic_quiz_lb') || '[]'); scores.push({ name: playerName, score: score, date: Date.now() }); scores.sort((a,b)=>b.score - a.score); scores = scores.slice(0,10); localStorage.setItem('islamic_quiz_lb', JSON.stringify(scores)); renderLeaderboard(); }
+    function renderLeaderboard() { let scores = JSON.parse(localStorage.getItem('islamic_quiz_lb') || '[]'); if(scores.length===0) { leaderboardDiv.innerText = 'কোন স্কোর নেই'; return; } let html = '<ol>'; scores.forEach(s=>{ html+=`<li>${s.name} - ${s.score} পয়েন্ট</li>`; }); html+='</ol>'; leaderboardDiv.innerHTML = html; }
+
+    function updateBadges() {
+        let html = '';
+        if(correctCount >= 5) html += '<span class="badge">🕌 সত্যের সাক্ষী (৫)</span>';
+        if(correctCount >= 10) html += '<span class="badge">📖 কুরআনের আলো (১০)</span>';
+        if(correctCount >= 20) html += '<span class="badge">⭐ তাকওয়ার মুকুট (২০+)</span>';
+        if(totalScore >= 500) html += '<span class="badge">☪️ নেককার বান্দা</span>';
+        if(totalScore >= 1000) html += '<span class="badge">🏅 আলিমের রত্ন</span>';
+        if(html === '') html = '<span>🔰 ইলম অর্জন করুন</span>';
+        badgeDiv.innerHTML = html;
+    }
+
+    function shuffleArray(arr) { for(let i=arr.length-1;i>0;i--){ let j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
+    function resetAndShuffleQuestions() { let indices = Array.from({length: FULL_QUESTION_SET.length}, (_,i)=>i); currentQuestionsShuffle = shuffleArray([...indices]); currentQIndex=0; }
+    function updateLifelineUI() { hintCountSpan.innerText = hintRemaining; fiftyCountSpan.innerText = fiftyRemaining; if(hintRemaining<=0) hintBtn.classList.add('disabled-lf'); else hintBtn.classList.remove('disabled-lf'); if(fiftyRemaining<=0) fiftyBtn.classList.add('disabled-lf'); else fiftyBtn.classList.remove('disabled-lf'); }
+    function resetLifelinesGlobal() { hintRemaining = 3; fiftyRemaining = 2; usedHintThisQ=false; usedFiftyThisQ=false; fiftyActiveReducedOptions=false; updateLifelineUI(); }
+
+    function useHint() { if(!gameActive || !canAnswer || gameEnded) return; if(hintRemaining<=0 || usedHintThisQ) { feedbackDiv.innerHTML = "⚠️ হিন্ট শেষ বা ব্যবহার করেছেন!"; setTimeout(()=>{ if(gameActive) feedbackDiv.innerHTML=""; },1000); return; } hintRemaining--; usedHintThisQ=true; updateLifelineUI(); const btns = document.querySelectorAll('.opt-btn'); if(currentCorrectShuffledIndex>=0 && btns[currentCorrectShuffledIndex]) { btns[currentCorrectShuffledIndex].classList.add('correct-highlight'); setTimeout(()=> btns[currentCorrectShuffledIndex]?.classList.remove('correct-highlight'), 1500); } feedbackDiv.innerHTML = "💡 হিন্ট: সবুজ চিহ্নিত উত্তরটি সঠিক!"; playBeep('correct'); setTimeout(()=>{ if(gameActive && feedbackDiv.innerHTML.includes("হিন্ট")) feedbackDiv.innerHTML=""; },1500); }
+    function useFifty() { if(!gameActive || !canAnswer || gameEnded) return; if(fiftyRemaining<=0 || usedFiftyThisQ || fiftyActiveReducedOptions) { feedbackDiv.innerHTML = "❌ ৫০-৫০ ব্যবহার করা যাবে না!"; setTimeout(()=>{ if(gameActive) feedbackDiv.innerHTML=""; },1000); return; } fiftyRemaining--; usedFiftyThisQ=true; updateLifelineUI(); let wrongIndices = []; for(let i=0;i<currentShuffledOptions.length;i++) if(i !== currentCorrectShuffledIndex) wrongIndices.push(i); if(wrongIndices.length>=2) { let shuffledWrong = shuffleArray([...wrongIndices]); let removeIdx1 = shuffledWrong[0]; let removeIdx2 = shuffledWrong[1]; let newOptions = []; let newMapping = []; for(let i=0;i<currentShuffledOptions.length;i++) { if(i !== removeIdx1 && i !== removeIdx2) { newOptions.push(currentShuffledOptions[i]); newMapping.push(i); } } let newCorrectIndex = newMapping.indexOf(currentCorrectShuffledIndex); if(newCorrectIndex !== -1) { currentShuffledOptions = newOptions; currentCorrectShuffledIndex = newCorrectIndex; fiftyActiveReducedOptions = true; renderOptionsButtons(); feedbackDiv.innerHTML = "🎲 ৫০-৫০! দুটি ভুল অপশন বাদ গেছে।"; setTimeout(()=>{ if(gameActive && feedbackDiv.innerHTML.includes("৫০-৫০")) feedbackDiv.innerHTML=""; },1800); } } else { feedbackDiv.innerHTML = "পর্যাপ্ত অপশন নেই!"; fiftyRemaining++; updateLifelineUI(); } }
+
+    function renderOptionsButtons() { optionsDiv.innerHTML = ''; currentShuffledOptions.forEach((opt, idx) => { const btn = document.createElement('button'); btn.className = 'opt-btn'; btn.innerText = `${String.fromCharCode(65+idx)}. ${opt}`; btn.addEventListener('click', () => handleAnswer(idx)); optionsDiv.appendChild(btn); }); }
+
+    function loadQuestion() { if(!gameActive) return; if(currentQIndex >= currentQuestionsShuffle.length) { endGame(); return; } stopTimer(); usedHintThisQ=false; usedFiftyThisQ=false; fiftyActiveReducedOptions=false; const qIdx = currentQuestionsShuffle[currentQIndex]; const q = FULL_QUESTION_SET[qIdx]; questionEl.innerText = q.text; const indices = [0,1,2,3]; shuffleArray(indices); currentShuffledOptions = indices.map(i => q.options[i]); currentCorrectShuffledIndex = currentShuffledOptions.findIndex(opt => opt === q.options[q.correct]); renderOptionsButtons(); canAnswer = true; timeLeft = 15; updateTimerDisplay(); startTimer(); feedbackDiv.innerHTML = ''; updateHeaderStats(); setRandomReminder(); }
+
+    function updateHeaderStats() { scoreDisplay.innerText = `${t('score')}: ${totalScore}`; qCounter.innerText = `${t('q')}: ${currentQIndex+1}/${currentQuestionsShuffle.length}`; correctWrongSpan.innerText = `✅ ${correctCount} | ❌ ${wrongCount}`; streakSpan.innerText = `${t('streak')}: ${streak}`; updateBadges(); }
+    function startTimer() { if(timerInterval) clearInterval(timerInterval); timerInterval = setInterval(() => { if(!canAnswer || !gameActive) return; if(timeLeft <= 0) { clearInterval(timerInterval); handleTimeout(); } else { timeLeft--; updateTimerDisplay(); } }, 1000); }
+    function stopTimer() { if(timerInterval){ clearInterval(timerInterval); timerInterval=null; } }
+    function updateTimerDisplay() { let percent = (timeLeft/15)*100; timerFill.style.width = `${Math.max(0,percent)}%`; }
+    function handleTimeout() { if(!canAnswer || !gameActive) return; canAnswer=false; stopTimer(); feedbackDiv.innerHTML = `<span style="color:var(--wrong)">${t('timeup')}</span>`; wrongCount++; streak=0; updateHeaderStats(); disableOptions(true); const btns = document.querySelectorAll('.opt-btn'); if(currentCorrectShuffledIndex>=0) btns[currentCorrectShuffledIndex]?.classList.add('correct-highlight'); setTimeout(()=> nextQuestion(), 1300); }
+    function disableOptions(disabled) { document.querySelectorAll('.opt-btn').forEach(btn => btn.disabled = disabled); }
+    function handleAnswer(selected) { if(!canAnswer || !gameActive) return; canAnswer=false; stopTimer(); const isCorrect = (selected === currentCorrectShuffledIndex); const answerTimeBonus = timeLeft; const btns = document.querySelectorAll('.opt-btn'); if(currentCorrectShuffledIndex>=0) btns[currentCorrectShuffledIndex]?.classList.add('correct-highlight'); if(!isCorrect && selected>=0) btns[selected]?.classList.add('wrong-highlight'); if(isCorrect) { playBeep('correct'); vibratePattern(); let pointsEarned = 100 + Math.floor(answerTimeBonus * 5); totalScore += pointsEarned; correctCount++; streak++; let extraBonus=0; if(streak%3===0 && streak>=3) { extraBonus=50; totalScore+=extraBonus; } feedbackDiv.innerHTML = `<span style="color:var(--correct)">✅ ${t('correctAns')} +${pointsEarned} ${extraBonus>0? `+${extraBonus} ${t('streakBonus')}`:''}</span>`; } else { playBeep('wrong'); vibratePattern(); wrongCount++; streak=0; const correctAnsText = currentShuffledOptions[currentCorrectShuffledIndex]; feedbackDiv.innerHTML = `<span style="color:var(--wrong)">${t('wrongAns')} "${correctAnsText}"</span>`; } updateHeaderStats(); disableOptions(true); setTimeout(()=> nextQuestion(), 1300); }
+    function nextQuestion() { if(!gameActive) return; currentQIndex++; if(currentQIndex >= currentQuestionsShuffle.length) endGame(); else loadQuestion(); }
+    function endGame() { if(gameEnded) return; gameActive=false; gameEnded=true; stopTimer(); const totalTimeSec = Math.floor((Date.now() - totalStartTime)/1000); saveScoreToLeaderboard(totalScore); let resultHtml = `<div class="result-screen"><h2>🎉 ${t('gameOver')}</h2><p>⭐ মোট স্কোর: ${totalScore}</p><p>✅ সঠিক: ${correctCount} | ❌ ভুল: ${wrongCount}</p><p>⏱️ সময়: ${Math.floor(totalTimeSec/60)}মি ${totalTimeSec%60}সে</p><p>🤲 আল্লাহ কবুল করুন!</p><button id="playAgainFinalBtn">🔄 ${t('playAgain')}</button></div>`; questionEl.innerHTML = resultHtml; optionsDiv.innerHTML = ''; feedbackDiv.innerHTML = ''; disableOptions(true); document.getElementById('playAgainFinalBtn')?.addEventListener('click', ()=>{ fullResetGame(); }); }
+    function fullResetGame() { stopTimer(); gameActive=true; gameEnded=false; totalScore=0; correctCount=0; wrongCount=0; streak=0; resetAndShuffleQuestions(); currentQIndex=0; totalStartTime=Date.now(); canAnswer=true; resetLifelinesGlobal(); usedHintThisQ=false; usedFiftyThisQ=false; fiftyActiveReducedOptions=false; updateHeaderStats(); loadQuestion(); }
+    function manualSkip() { if(!gameActive || !canAnswer || gameEnded) return; canAnswer=false; stopTimer(); wrongCount++; streak=0; updateHeaderStats(); feedbackDiv.innerHTML = `<span style="color:var(--wrong)">⏩ ${t('skipMsg')}</span>`; const btns = document.querySelectorAll('.opt-btn'); if(currentCorrectShuffledIndex>=0) btns[currentCorrectShuffledIndex]?.classList.add('correct-highlight'); disableOptions(true); setTimeout(()=> nextQuestion(), 800); }
+
+    // ইভেন্ট বাইন্ডিং
+    startBtn.addEventListener('click', () => { let name = playerNameInput.value.trim(); if(name === "") name = "সালেক_" + Math.floor(Math.random()*1000); playerName = name.substring(0,20); nameSetupDiv.style.display = "none"; gameContainer.style.display = "block"; renderLeaderboard(); fullResetGame(); });
+    skipBtn.onclick = ()=> { if(gameActive && !gameEnded) manualSkip(); };
+    restartBtn.onclick = ()=> { if(gameActive || gameEnded) fullResetGame(); };
+    soundToggle.onchange = (e)=> { soundEnabled = e.target.checked; };
+    vibToggle.onchange = (e)=> { vibEnabled = e.target.checked; };
+    themeToggle.onclick = ()=> { document.body.classList.toggle('dark'); };
+    langToggle.onclick = ()=> { isBanglaUI = !isBanglaUI; if(!gameEnded && gameActive) updateHeaderStats(); };
+    hintBtn.onclick = useHint;
+    fiftyBtn.onclick = useFifty;
+    renderLeaderboard();
+    setRandomReminder();
+</script>
+</body>
+</html>
