@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>ইসলামিক কুইজ ইঞ্জিন | ইলম ও তাকওয়া</title>
+    <style>
         * {
             margin: 0;
             padding: 0;
@@ -58,7 +60,6 @@
             background-attachment: fixed;
         }
 
-        /* ইসলামিক আর্চ প্যাটার্ন */
         .quiz-container {
             max-width: 850px;
             width: 100%;
@@ -306,7 +307,7 @@
 <body>
 <div class="quiz-container" id="quizApp">
     <div class="game-header">
-        <div class="game-title">☪️ BLACK FORCE 007 | ইসলামিক কুইজ ইঞ্জিন</div>
+        <div class="game-title">☪️ ইসলামিক কুইজ ইঞ্জিন | ইলম ও তাকওয়া</div>
         <button id="themeToggleBtn" style="background: var(--primary-dark); padding: 4px 12px;">🌙 থিম</button>
     </div>
     <div id="nameSetupContainer" class="name-prompt">
@@ -371,7 +372,6 @@
         ["হিজরি সনের প্রথম মাস কোনটি?", "মুহাররম", "রমজান", "শাওয়াল", "রবিউল আউয়াল", 0],
         ["পাঁচ ওয়াক্ত নামাজ কখন ফরজ হয়?", "মেরাজের রাতে", "হিজরতের আগে", "বদর যুদ্ধে", "উহুদের দিন", 0],
         ["বদর যুদ্ধ সংঘটিত হয় কত হিজরীতে?", "২ হিজরী", "১ হিজরী", "৩ হিজরী", "৪ হিজরী", 0],
-        ["কোন সাহাবী ‘তারেক বিন যিয়াদ’ নামে বিখ্যাত?", "আবদুল্লাহ ইবনে জিয়াদ", "আমর ইবনুল আস", "খালিদ বিন ওয়ালিদ", "সা'দ ইবনে আবি ওয়াক্কাস", 0], // সঠিক উত্তর নেই? পরিবর্তন করি: "কোন সাহাবী সর্বপ্রথম ইসলাম গ্রহণ করেন?"-> খাদিজা (রা)
         ["প্রথম মুসলমান মহিলা কে?", "খাদিজা (রা.)", "আয়েশা (রা.)", "ফাতিমা (রা.)", "আসমা (রা.)", 0],
         ["‘লা ইলাহা ইল্লাল্লাহ’ অর্থ কী?", "আল্লাহ ছাড়া কোন ইলাহ নেই", "আল্লাহ এক", "মুহাম্মদ রাসূল", "আল্লাহ মহান", 0],
         ["কুরআনের কোন সূরাকে ‘দিলে কুরআন’ বলা হয়?", "সূরা ইয়াসিন", "সূরা রহমান", "সূরা মুলক", "সূরা ফাতiha", 0],
@@ -386,7 +386,6 @@
         ["কোন সূরায় ‘পানি থেকে সবকিছু সৃষ্টি’ উল্লেখ আছে?", "সূরা আম্বিয়া", "সূরা বাকারা", "সূরা ইয়াসিন", "সূরা মরিয়ম", 0],
         ["‘ইসলাম’ শব্দের আভিধানিক অর্থ কী?", "আনুগত্য ও শান্তি", "সালাম", "শক্তিশালী", "প্রার্থনা", 0],
         ["মসজিদুল হারাম কোন শহরে অবস্থিত?", "মক্কা", "মদিনা", "কুদস", "কায়রো", 0],
-        ["কাদিয়ানী মতবাদ কে প্রত্যাখ্যান করেন?", "মুসলিম উম্মাহ", "ইহুদিরা", "খ্রিস্টান", "বৌদ্ধ", 0],
         ["কুরআনের সর্বমোট পারা (জুযু) কতটি?", "৩০টি", "২৯টি", "২৮টি", "৩১টি", 0],
         ["‘তাকওয়া’ অর্থ কী?", "আল্লাহভীরুতা", "অহংকার", "ভয়", "প্রেম", 0],
         ["আল্লাহর ৯৯টি নামকে কি বলা হয়?", "আসমাউল হুসনা", "কুল হুওয়াল্লাহ", "আয়াতুল্লাহ", "হাবীবুল্লাহ", 0],
@@ -401,7 +400,6 @@
         ["মহররম মাসের ১০ই তারিখ কোন দিন হিসেবে বিখ্যাত?", "আশুরা", "আরাফার দিন", "ঈদুল ফিতর", "ঈদুল আযহা", 0],
         ["সুবহানাল্লাহ, আলহামদুলিল্লাহ, আল্লাহু আকবারের মিলিত জিকিরকে কি বলে?", "তাসবিহ, তাহমিদ, তাকবির", "কালিমা", "দরূদ", "শাহাদাত", 0],
         ["জান্নাতী খাবার ‘তুবা’ গাছ কোথায়?", "জান্নাতে", "দুনিয়ায়", "সিদরাতুল মুনতাহায়", "পাতালে", 0],
-        ["‘ইসলাম’ শব্দটি কুরআনের কোথায় এসেছে?", "অনেক আয়াতে", "একবার", "কখনো না", "শুধু সূরা বাকারায়", 0],
         ["হযরত ইউসুফ (আ.) কত বছর কারাগারে ছিলেন?", "৭ বছর", "৫ বছর", "১০ বছর", "১২ বছর", 0],
         ["পবিত্র কুরআন নাজিলের রাত কোনটি?", "লাইলাতুল কদর", "শবে বরাত", "শবে মেরাজ", "জুমুয়াহ রাত", 0],
         ["সূরা ফীল-এ কোন ঘটনা বর্ণিত হয়েছে?", "আব্রাহার হস্তী বাহিনী ধ্বংস", "বদর যুদ্ধ", "উহুদ যুদ্ধ", "খন্দকের ঘটনা", 0],
@@ -409,9 +407,12 @@
         ["কোন ফেরেশতা কেয়ামতের দিন শিঙ্গায় ফুঁ দেবেন?", "ইসরাফিল (আ.)", "জিবরাঈল (আ.)", "মিকাইল (আ.)", "আজরাইল (আ.)", 0],
         ["মুহাম্মদ (সা.)-এর মায়ের নাম কী?", "আমিনা", "আসমা", "হালিমা", "ফাতিমা", 0],
         ["‘রমজান’ শব্দের অর্থ কী?", "দহন / পোড়ানো", "শান্তি", "উপবাস", "আলোকিত", 0],
-        ["কোন সূরায় ‘সুবহানাল্লাহি ওয়াবিহামদিহি’ তাসবিহ আছে?", "সূরা ত্বোয়া হা", "সূরা রূম", "সূরা হাশর", "সূরা কদর", 2],
+        ["কোন সূরায় ‘সুবহানাল্লাহি ওয়াবিহামদিহি’ তাসবিহ বেশি বর্ণিত?", "সূরা ত্বোয়া হা", "সূরা রূম", "সূরা হাশর", "সূরা কদর", 2],
         ["শয়তান বিতাড়িত হওয়ার জন্য কোন সূরা পড়া সুন্নাত?", "আল-ফালাক ও আন-নাস", "ইখলাস", "ফাতিহা", "বাকারার শেষ আয়াত", 0],
-        ["জুমুয়ার দিন কোন সূরা পড়তে উৎসাহিত?", "সূরা কাহফ", "সূরা ইয়াসিন", "সূরা মুলক", "সূরা ওয়াক্বিয়া", 0]
+        ["জুমুয়ার দিন কোন সূরা পড়তে উৎসাহিত?", "সূরা কাহফ", "সূরা ইয়াসিন", "সূরা মুলক", "সূরা ওয়াক্বিয়া", 0],
+        ["‘ইসলামিক ফাউন্ডেশন’ বাংলাদেশ কখন প্রতিষ্ঠিত?", "১৯৭৫", "১৯৭১", "১৯৮০", "১৯৬৫", 0],
+        ["কুরআনের কোন সূরায় ‘পাখি ও পাথর’ এর উল্লেখ আছে?", "সূরা ফীল", "সূরা কুরাইশ", "সূরা হুমাযাহ", "সূরা মাসাদ", 0],
+        ["মুয়াজ ইবনে জাবাল কিসের জন্য বিখ্যাত?", "ফিকহ ও ফতোয়া", "জিহাদ", "তাফসীর", "হাদিস বর্ণনা", 0]
     ]; // ৫০টি পূর্ণ
 
     const FULL_QUESTION_SET = ISLAMIC_QUESTIONS.slice(0,50).map(q => ({
@@ -489,12 +490,11 @@
 
     function setRandomReminder() { let idx = Math.floor(Math.random() * islamicReminders.length); dailyAyatDiv.innerText = islamicReminders[idx]; }
 
-    // সাউন্ড ও ভাইব্রেশন
     function playBeep(type) { if(!soundEnabled) return; try { const audioCtx = new (window.AudioContext || window.webkitAudioContext)(); const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination); osc.frequency.value = type==='correct'? 880:440; gain.gain.value=0.07; osc.start(); gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime+0.4); osc.stop(audioCtx.currentTime+0.3); audioCtx.resume(); } catch(e){} }
     function vibratePattern() { if(vibEnabled && navigator.vibrate) navigator.vibrate(60); }
 
     function saveScoreToLeaderboard(score) { let scores = JSON.parse(localStorage.getItem('islamic_quiz_lb') || '[]'); scores.push({ name: playerName, score: score, date: Date.now() }); scores.sort((a,b)=>b.score - a.score); scores = scores.slice(0,10); localStorage.setItem('islamic_quiz_lb', JSON.stringify(scores)); renderLeaderboard(); }
-    function renderLeaderboard() { let scores = JSON.parse(localStorage.getItem('islamic_quiz_lb') || '[]'); if(scores.length===0) { leaderboardDiv.innerText = 'কোন স্কোর নেই'; return; } let html = '<ol>'; scores.forEach(s=>{ html+=`<li>${s.name} - ${s.score} পয়েন্ট</li>`; }); html+='</ol>'; leaderboardDiv.innerHTML = html; }
+    function renderLeaderboard() { let scores = JSON.parse(localStorage.getItem('islamic_quiz_lb') || '[]'); if(scores.length===0) { leaderboardDiv.innerText = 'কোন স্কোর নেই'; return; } let html = '<ol style="margin-left:18px;">'; scores.forEach(s=>{ html+=`<li>${s.name} - ${s.score} পয়েন্ট</li>`; }); html+='</ol>'; leaderboardDiv.innerHTML = html; }
 
     function updateBadges() {
         let html = '';
